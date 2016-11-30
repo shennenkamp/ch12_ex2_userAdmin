@@ -13,7 +13,7 @@ public class ConnectionPool {
     private ConnectionPool() {
         try {
             InitialContext ic = new InitialContext();
-            dataSource = (DataSource) ic.lookup("java:/comp/env/jdbc/murach");
+            dataSource = (DataSource) ic.lookup("java:/comp/env/jdbc/MySQLDS");
         } catch (NamingException e) {
             System.out.println(e);
         }
@@ -40,6 +40,6 @@ public class ConnectionPool {
             c.close();
         } catch (SQLException e) {
             System.out.println(e);
-        }
     }
+		}
 }

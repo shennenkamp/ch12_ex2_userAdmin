@@ -130,7 +130,35 @@ public class UserDB {
     }
     
     public static ArrayList<User> selectUsers() {
-        // add code that returns an ArrayList<User> object of all users in the User table
-        return null;
+        ConnectionPool cp = ConnectionPool.getInstance();
+				Connection connection = cp.getConnection();
+				
+				String str = "SELECT * FROM User";
+				
+				PreparedStatement ps = null;
+        ResultSet rs = null;
+				
+				        try {
+            ps = connection.prepareStatement(str);
+            rs = ps.executeQuery();
+            ArrayList<User> list = new ArrayList<User>();
+						
+            while (rs.next()){
+                User user = new User();
+                user.setFirstName(rs.getString("FirstName"));
+                user.setLastName(rs.getString("LastName"));
+                user.setEmail(rs.getString("Email"));
+                list.add(user);
+            }
+            return list;
+						
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        } finally {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            cp.freeConnection(connection);
+        }
     }    
 }
